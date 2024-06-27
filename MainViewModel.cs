@@ -8,35 +8,40 @@ namespace MauiMemoryLeaks
 
     internal partial class MainViewModel : ObservableObject
     {
-        public ObservableCollection<RadioModel> Items { get; } = [];
+        public ObservableCollection<RadioModel> Items { get; private set; } = [];
 
         [RelayCommand]
         private void RecreateList()
         {
-            Items.Clear();
-
+            // Two GCs help it keep up if you tap very quickly
             GC.Collect();
+            GC.WaitForPendingFinalizers();
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
 
-            Items.Add(new RadioModel("Manuel Neuer"));
-            Items.Add(new RadioModel("Mats Hummels"));
-            Items.Add(new RadioModel("Joshua Kimmich"));
-            Items.Add(new RadioModel("Toni Kroos"));
-            Items.Add(new RadioModel("Thomas Müller"));
-            Items.Add(new RadioModel("Leroy Sané"));
-            Items.Add(new RadioModel("Serge Gnabry"));
-            Items.Add(new RadioModel("Leon Goretzka"));
-            Items.Add(new RadioModel("Ilkay Gündogan"));
-            Items.Add(new RadioModel("Timo Werner"));
-            Items.Add(new RadioModel("Marco Reus"));
-            Items.Add(new RadioModel("Niklas Süle"));
-            Items.Add(new RadioModel("Kai Havertz"));
-            Items.Add(new RadioModel("Kevin Trapp"));
-            Items.Add(new RadioModel("Julian Brandt"));
-            Items.Add(new RadioModel("Thilo Kehrer"));
-            Items.Add(new RadioModel("Antonio Rüdiger"));
-            Items.Add(new RadioModel("Emre Can"));
-            Items.Add(new RadioModel("Jonas Hofmann"));
-            Items.Add(new RadioModel("Lukas Klostermann"));
+            Items = [
+                new RadioModel("Manuel Neuer"),
+                new RadioModel("Mats Hummels"),
+                new RadioModel("Joshua Kimmich"),
+                new RadioModel("Toni Kroos"),
+                new RadioModel("Thomas Müller"),
+                new RadioModel("Leroy Sané"),
+                new RadioModel("Serge Gnabry"),
+                new RadioModel("Leon Goretzka"),
+                new RadioModel("Ilkay Gündogan"),
+                new RadioModel("Timo Werner"),
+                new RadioModel("Marco Reus"),
+                new RadioModel("Niklas Süle"),
+                new RadioModel("Kai Havertz"),
+                new RadioModel("Kevin Trapp"),
+                new RadioModel("Julian Brandt"),
+                new RadioModel("Thilo Kehrer"),
+                new RadioModel("Antonio Rüdiger"),
+                new RadioModel("Emre Can"),
+                new RadioModel("Jonas Hofmann"),
+                new RadioModel("Lukas Klostermann"),
+            ];
+            OnPropertyChanged(nameof(Items));
         }
 
     }
